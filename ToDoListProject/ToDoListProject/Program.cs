@@ -16,7 +16,7 @@ namespace ToDoListProject
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://*:5000"); // Listen on all interfaces at port 5000
+                    webBuilder.UseUrls("http://*:80"); // Listen on all interfaces at port 5000
 
                 });
     }
