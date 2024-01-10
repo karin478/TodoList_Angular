@@ -5,7 +5,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ToDoListProject/ToDoListProject.csproj", "ToDoListProject/"]
 RUN dotnet restore "ToDoListProject/ToDoListProject.csproj"
-COPY ToDoListProject/ ./
+COPY ["ToDoListProject", "./ToDoListProject"]
 WORKDIR "/src/ToDoListProject"
 RUN dotnet build "ToDoListProject.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
