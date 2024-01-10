@@ -53,7 +53,7 @@ namespace ToDoListProject
                 options.AddPolicy("AllowSpecificOrigins",
                     builder =>
                     {
-                        builder.WithOrigins("https://nsfk7n-4200.csb.app/",
+                        builder.WithOrigins("https://nsfk7n-4200.csb.app",
                                             "https://frontenddomain2.com",
                                             "https://frontenddomain3.com") // Replace with your frontend domains
                                .AllowAnyHeader()
