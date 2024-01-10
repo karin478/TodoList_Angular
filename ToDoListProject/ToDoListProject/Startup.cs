@@ -7,6 +7,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ToDoListProject.Data;
 using ToDoListProject.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using ToDoListProject.Services;
 
 namespace ToDoListProject
 {
@@ -23,15 +30,13 @@ namespace ToDoListProject
         {
             services.AddControllers();
 
-            // Setting up the DbContext with SQLite or In-Memory Database for simplicity. Uncomment as needed.
-
             // For SQLite Database
-             services.AddDbContext<AppDbContext>(options =>
-                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             // For In-Memory Database
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("ToDoList"));
+            //services.AddDbContext<AppDbContext>(options =>
+            //    options.UseInMemoryDatabase("ToDoList"));
 
             // Set up dependency injection for the service layer.
             services.AddScoped<IToDoItemService, ToDoItemService>();
@@ -40,6 +45,20 @@ namespace ToDoListProject
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList API", Version = "v1" });
+            });
+
+            // Add CORS services and define the policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://nsfk7n-4200.csb.app/",
+                                            "https://frontenddomain2.com",
+                                            "https://frontenddomain3.com") // Replace with your frontend domains
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
             });
         }
 
@@ -51,6 +70,9 @@ namespace ToDoListProject
             }
 
             app.UseRouting();
+
+            // Enable CORS with the specified policy
+            app.UseCors("AllowSpecificOrigins");
 
             app.UseAuthorization();
 
