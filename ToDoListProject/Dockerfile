@@ -15,6 +15,8 @@ RUN dotnet publish "ToDoListProject.csproj" -c $BUILD_CONFIGURATION -o /app/publ
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# 确保数据库文件也被复制到最终的镜像中
+COPY ["ToDoListProject/ToDoList.db", "./"]
 ENTRYPOINT ["dotnet", "ToDoListProject.dll"]
 
 
